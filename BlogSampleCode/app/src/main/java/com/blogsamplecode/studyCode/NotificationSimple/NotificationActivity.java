@@ -109,7 +109,9 @@ public class NotificationActivity extends Activity implements View.OnClickListen
         notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 
         //发送Notification
-        nm.notify(i ++, notification);
+        nm.notify(1, notification);
+        nm.cancel(1);
+        nm.cancelAll();
     }
 
     private int i = 1;
