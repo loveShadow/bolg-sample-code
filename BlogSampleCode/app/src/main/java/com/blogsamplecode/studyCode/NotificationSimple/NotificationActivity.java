@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import com.blogsamplecode.R;
 
@@ -110,13 +111,34 @@ public class NotificationActivity extends Activity implements View.OnClickListen
 
         //发送Notification
         nm.notify(1, notification);
-        nm.cancel(1);
-        nm.cancelAll();
     }
 
     private int i = 1;
 
     private void sendCustomNotification() {
+        //创建Notification.Builder
+        Notification.Builder builder = new Notification.Builder(getApplicationContext());
+        //创建RemoteView
+        RemoteViews remoteView = new RemoteViews(getPackageName(), R.layout.notification_custom_layout);
+        //设置图片
+        remoteView.setImageViewResource(R.id.notification_custom_layout_image, R.drawable.notification_custom_icon);
+        remoteView.setTextViewText(R.id.notification_custom_layout_text, "这是一个自定义Notification");
+        builder.setContent(remoteView);
 
+        //不设置icon将显示不出来Notification
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        /**
+         * 注意：此处要兼容API
+         */
+        Notification notification = null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            notification = builder.getNotification();
+        } else {
+            //build调用需要 API 16
+            notification = builder.build();
+        }
+
+        //发送Notification
+        nm.notify(2, notification);
     }
 }
